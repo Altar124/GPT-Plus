@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Checkout Promo | JAVASIA24</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border-color);
+        }
+
+        .guide-card {
+            position: sticky;
+            top: 24px;
+        }
+
+        .guide-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .guide-list { display: grid; gap: 16px; }
+        
+        .guide-step {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .guide-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #eff6ff;
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 2px solid #bfdbfe;
+        }
+
+        .guide-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+        .guide-text { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+        .guide-link { color: var(--primary); text-decoration: none; font-weight: 600; }
+        .guide-link:hover { text-decoration: underline; }
+
+        .card-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+        .card-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
+
+        .plan-badge {
+            display: inline-flex;
+            align-items: center;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: var(--primary);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            width: 100%;
+        }
+
+        .field-label {
+            font-size: 13px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            background: #f8fafc;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 13px;
+            padding: 16px;
+            outline: none;
+            resize: none;
+            height: 120px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+        .error-box {
+            display: none;
+            margin-top: 16px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            padding: 14px;
+            color: var(--error);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .error-box.show { display: block; }
+
+        .result-box {
+            display: none;
+            margin-top: 16px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+        .result-box.show { display: block; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-title { color: var(--success); font-weight: 700; margin-bottom: 12px; font-size: 15px;}
+        
+        .promo-tag {
+            font-size: 12px; font-weight: 600; padding: 6px 12px;
+            border-radius: 8px; margin-bottom: 14px; display: inline-block;
+        }
+        .promo-ok { background: #dcfce7; color: var(--success); border: 1px solid #86efac; }
+        .promo-no { background: #fef2f2; color: var(--error); border: 1px solid #fecaca; }
+
+        .link-display {
+            background: #fff; border: 1px solid #bbf7d0; border-radius: 8px;
+            padding: 12px; font-size: 13px; font-family: monospace;
+            color: var(--success); margin-bottom: 16px;
+            overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+        }
+
+        .result-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        .btn-action {
+            padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s;
+        }
+        .btn-copy { background: #dcfce7; color: var(--success); }
+        .btn-copy:hover { background: #bbf7d0; }
+        .btn-open { background: var(--primary); color: #fff; }
+        .btn-open:hover { background: var(--primary-hover); }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .footer span {
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        @media (max-width: 768px) {
+            .wrapper { grid-template-columns: 1fr; }
+            .guide-card { position: static; order: 2; }
+            .card { order: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="card guide-card">
+            <div class="guide-title">Cara Claim Singkat</div>
+            <div class="guide-list">
+                <div class="guide-step">
+                    <div class="guide-num">1</div>
+                    <div>
+                        <div class="guide-name">Salin Session</div>
+                        <div class="guide-text">Buka <a class="guide-link" href="https://chatgpt.com/api/auth/session" target="_blank">link session</a>, dan copy semua JSON.</div>
+                    </div>
+                </div>
+                <div class="guide-step">
+                    <div class="guide-num">2</div>
+                    <div>
+                        <div class="guide-name">Tempel Session</div>
+                        <div class="guide-text">Masukkan JSON yang disalin ke kolom Session Akun di samping.</div>
+                    </div>
+                </div>
+                <div class="guide-step">
+                    <div class="guide-num">3</div>
+                    <div>
+                        <div class="guide-name">Buat Link</div>
+                        <div class="guide-text">Klik Buat Link, tunggu sampai link checkout muncul.</div>
+                    </div>
+                </div>
+                <div class="guide-step">
+                    <div class="guide-num">4</div>
+                    <div>
+                        <div class="guide-name">Buka Checkout</div>
+                        <div class="guide-text">Buka link tersebut dan selesaikan proses pada halaman checkout.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Free GPT Plus</div>
+            <div class="card-sub">Cek promo Plus gratis bulan pertama untuk akun eligible</div>
+
+            <div class="plan-badge">
+                🌐 ChatGPT Plus (IDR · Indonesia)
+            </div>
+
+            <label class="field-label" for="session">Session Akun</label>
+            <textarea id="session" placeholder="Tempel JSON dari chatgpt.com/api/auth/session..."></textarea>
+
+            <button class="btn" id="generate-btn" type="button" onclick="handleGenerate()">
+                Buat Link Checkout
+            </button>
+
+            <div class="error-box" id="error-box">
+                <div id="error-text"></div>
+            </div>
+
+            <div class="result-box" id="result-box">
+                <div class="result-title">✅ Link berhasil dibuat!</div>
+                <div id="promo-tag" class="promo-tag"></div>
+                <div class="link-display" id="link-display"></div>
+                
+                <div class="result-actions">
+                    <button class="btn-action btn-copy" id="btn-copy" type="button" onclick="copyLink()">
+                        Salin Link
+                    </button>
+                    <button class="btn-action btn-open" type="button" onclick="openLink()">
+                        Buka Link
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Dibuat oleh <span>JAVASIA24</span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
